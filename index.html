@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Database Generator</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        
+        .box {
+            background: #1e293b;
+            margin: 20px auto;
+            padding: 15px;
+            width: 60%;
+            border-radius: 10px;
+            text-align: left;
+        }
+        #diagram {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+}
+
+        .table-box {
+            background: #334155;
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 150px;
+}
+    </style>
+    
+</head>
+<body>
+
+<h1>AI Database Schema Generator</h1>
+
+<input type="text" id="input" placeholder="Describe your system...">
+<button onclick="generate()">Generate</button>
+
+<p id="loading" style="display:none;">Generating schema...</p>
+
+<div class="box">
+    <h3>Tables</h3>
+    <pre id="tables"></pre>
+</div>
+
+<div class="box">
+    <h3>Relationships</h3>
+    <pre id="relationships"></pre>
+</div>
+
+<div class="box">
+    <h3>SQL</h3>
+    <pre id="sql"></pre>
+</div>
+
+<div class="box">
+    <h3>Queries</h3>
+    <pre id="queries"></pre>
+    <div class="box">
+    <h3>Schema Diagram</h3>
+    <div id="diagram"></div>
+</div>
+
+<script>
+async function generate() {
+    const input = document.getElementById("input").value;
+
+    // show loading
+    document.getElementById("loading").style.display = "block";
+
+    const res = await fetch(`/test?input=${input}`);
+    const data = await res.json();
+
+    // hide loading
+    document.getElementById("loading").style.display = "none";
+
+    document.getElementById("tables").innerText = data.tables.join("\n");
+    document.getElementById("relationships").innerText = data.relationships.join("\n");
+    document.getElementById("sql").innerText = data.sql.join("\n");
+    document.getElementById("queries").innerText = data.queries.join("\n");
+    const diagramDiv = document.getElementById("diagram");
+    diagramDiv.innerHTML = "";
+
+    data.tables.forEach(table => {
+        const div = document.createElement("div");
+        div.className = "table-box";
+        div.innerText = table;
+        diagramDiv.appendChild(div);
+});
+}
+</script>
+
+</body>
+</html>
