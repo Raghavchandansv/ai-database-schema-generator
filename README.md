@@ -1,2 +1,3 @@
-# ai-database-schema-generator
-AI system that converts business requirements into database schemas, SQL queries, and visual diagrams
+Copyright (c) 2026 Raghav
+
+Permission is hereby granted, free of charge, to any person obtaining a copy...
